@@ -1,0 +1,11 @@
+// config/constraints.json
+{
+    "CAP_THRESHOLDS": {
+        "large": 40000000,
+        "mid": 30000000,
+        "small": 10000000
+    },
+    "MAX_RISK_PER_TRADE": 0.02,
+    "MAX_PORTFOLIO_RISK": 0.1,
+    "MIN_REWARD_RATIO": 1.5
+}

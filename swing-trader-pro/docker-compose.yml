@@ -1,0 +1,18 @@
+# docker-compose.yml
+version: '3.8'
+
+services:
+  swing-trader:
+    build: .
+    environment:
+      - PYTHONUNBUFFERED=1
+      - BROKER_API_KEY=${BROKER_API_KEY}
+    volumes:
+      - ./config:/app/config
+      - ./data:/app/data
+    restart: unless-stopped
+
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"

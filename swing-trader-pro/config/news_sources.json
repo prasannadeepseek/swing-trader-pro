@@ -1,0 +1,15 @@
+//config/news_sources.json
+{
+  "moneycontrol": {
+    "url": "https://www.moneycontrol.com/rss/",
+    "categories": ["business", "markets"]
+  },
+  "economic_times": {
+    "url": "https://economictimes.indiatimes.com/markets/rssfeeds/1977021501.cms",
+    "weight": 0.7
+  },
+  "twitter_finance": {
+    "handles": ["@CNBCTV18Live", "@BloombergQuint"],
+    "api_key": "your_twitter_api_key"
+  }
+}
