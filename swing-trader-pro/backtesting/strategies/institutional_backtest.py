@@ -31,3 +31,14 @@ class InstitutionalBacktester:
             'pnl': exit_price - entry_price,
             'pnl_pct': (exit_price - entry_price) / entry_price
         }
+# method 2
+# backtesting/strategies/institutional_backtest.py
+
+
+class InstitutionalBacktester:
+    def _adjust_for_hedging(self, trade, hedge_data):
+        """Modify trade results based on hedging"""
+        if hedge_data['index_hedge']:
+            trade['pnl'] *= 0.7  # 30% penalty
+            trade['holding_period'] *= 1.5
+        return trade

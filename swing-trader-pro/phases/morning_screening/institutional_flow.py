@@ -60,3 +60,27 @@ class InstitutionalScreener:
                     'delivery_pct': metrics['delivery_pct']
                 }
         return screened
+# method 3
+# phases/1_morning_screening/institutional_flow.py
+
+
+class InstitutionalScreener:
+    def __init__(self):
+        self.data_pipeline = DataPipeline()
+
+    def get_enhanced_flows(self, symbol):
+        """Fetch complete institutional data"""
+        flows = self.data_pipeline.fetch_fii_activity()
+        oi_data = self.data_pipeline.fetch_oi_changes()
+        block_deals = self.data_pipeline.fetch_block_deals()
+
+        return {
+            'symbol': symbol,
+            'fii_flows': self._process_flows(flows),
+            'oi_changes': self._process_oi(oi_data),
+            'block_deals': self._match_block_deals(symbol, block_deals)
+        }
+
+    def _match_block_deals(self, symbol, deals):
+        """Verify if FII buying matches block deals"""
+        return [d for d in deals if d['symbol'] == symbol]

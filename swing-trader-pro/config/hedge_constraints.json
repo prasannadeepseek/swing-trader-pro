@@ -1,0 +1,7 @@
+// config/hedge_constraints.json
+{
+    "cash_derivatives_ratio": 1.5,
+    "sector_flow_threshold": -5e7,
+    "index_oi_change_limit": 0.15,
+    "delivery_hedge_gap": 0.15
+}

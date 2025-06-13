@@ -1,5 +1,6 @@
 # core/risk_engine.py
 # from config.constraints import MAX_RISK_PER_TRADE
+from config import hedge_constraints
 from config import constraints
 
 
@@ -30,3 +31,28 @@ class RiskEngine:
     def _check_max_risk(self, data):
         """Ensure risk per trade within limits"""
         return (data['entry'] - data['sl']) / data['entry'] < 0.05
+
+# method 2
+# core/risk_engine.py
+
+
+class RiskEngine:
+    def validate_institutional_trade(self, symbol_data):
+        """Enhanced validation with hedge checks"""
+        basic_checks = (
+            self._check_volatility(symbol_data) and
+            self._check_liquidity(symbol_data)
+        )
+
+        if not basic_checks:
+            return False
+
+        # Hedge-specific checks
+        hedge_ratio = symbol_data['fii_flows']['net_cash'] / \
+            abs(symbol_data['fii_flows']['net_fno'])
+        delivery_gap = symbol_data['delivery_pct'] - symbol_data['hedge_pct']
+
+        return (
+            hedge_ratio > hedge_constraints['cash_derivatives_ratio'] and
+            delivery_gap > hedge_constraints['delivery_hedge_gap']
+        )

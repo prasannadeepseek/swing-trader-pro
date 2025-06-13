@@ -1,0 +1,14 @@
+{
+    "nse": {
+        "base_url": "https://www.nseindia.com",
+        "timeout": 10
+    },
+    "nsdl": {
+        "fii_url": "https://www.nsdl.co.in/emi/ismr/fii_dii_archive.php",
+        "sector_url": "https://www.nsdl.co.in/emi/ismr/sector_reports.php"
+    },
+    "broker": {
+        "api_key": "your_api_key",
+        "access_token": "your_access_token"
+    }
+}

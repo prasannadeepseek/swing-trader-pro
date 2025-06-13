@@ -8,3 +8,8 @@ requests>=2.26.0
 TA-Lib>=0.4.0
 requests==2.26.0
 textblob==0.15.3
+nsepy==1.0
+requests-cache==0.9.8
+beautifulsoup4>=4.9.0
+tenacity>=8.0.0
+logging-handlers>=1.0.0

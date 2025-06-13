@@ -33,3 +33,18 @@ class SignalAggregator:
                 }
 
         return aggregated
+
+# method 2
+# alerts/telegram/signal_alerts.py
+
+
+class InstitutionalAlert:
+    @staticmethod
+    def hedge_alert(symbol, hedge_type):
+        return f"""
+⚠️ *HEDGE DETECTED*: {symbol}
+━━━━━━━━━━━━━━━━━━
+Type: {hedge_type}
+Action: Position size reduced
+━━━━━━━━━━━━━━━━━━
+"""
