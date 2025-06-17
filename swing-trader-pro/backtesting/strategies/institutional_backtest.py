@@ -35,7 +35,7 @@ class InstitutionalBacktester:
 # backtesting/strategies/institutional_backtest.py
 
 
-class InstitutionalBacktester:
+class HedgingAdjuster:
     def _adjust_for_hedging(self, trade, hedge_data):
         """Modify trade results based on hedging"""
         if hedge_data['index_hedge']:
