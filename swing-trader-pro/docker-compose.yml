@@ -16,3 +16,52 @@ services:
     image: redis:alpine
     ports:
       - "6379:6379"
+
+# version 2
+version: '3.8'
+
+services:
+  swing-trader:
+    build: .
+    container_name: swing-trader-app
+    environment:
+      - PYTHONUNBUFFERED=1
+      - BROKER_API_KEY=${BROKER_API_KEY}
+    volumes:
+      - ./config:/app/config
+      - ./data:/app/data
+    depends_on:
+      - redis
+    restart: unless-stopped
+    networks:
+      - swing-net
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    # Uncomment and set if you have a non-root user in your Dockerfile
+    # user: "1000:1000"
+    # logging:
+    #   driver: "json-file"
+    #   options:
+    #     max-size: "10m"
+    #     max-file: "3"
+
+  redis:
+    image: redis:alpine
+    container_name: swing-redis
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
+    networks:
+      - swing-net
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+networks:
+  swing-net:
+    driver: bridge      
