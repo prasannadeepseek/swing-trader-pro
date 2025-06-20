@@ -416,3 +416,73 @@ sequenceDiagram
 ```
 
 This implementation provides production-ready data fetching from all required sources while maintaining your project structure. Would you like me to add specific error handling patterns or expand any particular data source integration?
+main.py
+│ - Entry point; parses CLI args, sets up logging, selects broker, and starts the trading workflow.
+│
+└── PhaseManager (core/phase_manager.py) - Orchestrates the daily trading workflow: screening, signal generation, monitoring, execution, and reporting.
+│
+├── MorningScreening (phases/morning_screening/)
+│ - Runs institutional, quant, and Wyckoff screeners to select trade candidates.
+│ ├── InstitutionalScreener (phases/morning_screening/institutional/)
+│ │ - Screens stocks based on institutional activity.
+│ ├── QuantScreener (phases/morning_screening/quantitative/)
+│ │ - Screens stocks using quantitative/statistical methods.
+│ └── WyckoffScreener (phases/morning_screening/wyckoff/)
+│ - Screens stocks using Wyckoff accumulation/distribution analysis.
+│
+├── SignalGenerator (phases/2_signal_generation/)
+│ - Generates trade signals from screened stocks using multiple strategies.
+│ ├── StrategyRouter (phases/2_signal_generation/)
+│ │ - Routes to the appropriate trading strategy based on symbol/market context.
+│ │ ├── InstitutionalStrategy (strategies/institutional/)
+│ │ │ - Generates signals based on institutional flow.
+│ │ ├── WyckoffStrategy (strategies/wyckoff/)
+│ │ │ - Generates signals using Wyckoff principles.
+│ │ └── QuantStrategy (strategies/quantitative/)
+│ │ - Generates signals using quant models (mean reversion, momentum, etc).
+│ ├── TrendClassifier (phases/2_signal_generation/)
+│ │ - Classifies the trend for each symbol.
+│ └── WeightAllocator (phases/2_signal_generation/)
+│ - Allocates position weights based on risk and signal strength.
+│
+├── DynamicMonitor (phases/dynamic_monitoring/)
+│ - Monitors active trades, updates GTTs, and manages exits during the day.
+│ ├── GTTUpdater (phases/dynamic_monitoring/)
+│ │ - Updates Good-Till-Triggered (GTT) orders as needed.
+│ ├── RiskAssessor (phases/dynamic_monitoring/)
+│ │ - Assesses risk and triggers alerts or exits if thresholds are breached.
+│ └── ExitManager (phases/dynamic_monitoring/)
+│ - Manages trade exits based on rules or signals.
+│
+├── ReportingEngine (phases/4_reporting/)
+│ - Generates daily reports and performance analytics.
+│ ├── DailyReport (phases/4_reporting/)
+│ │ - Compiles and formats the daily trading report.
+│ └── PerformanceAnalyzer (phases/4_reporting/)
+│ - Analyzes trading performance metrics.
+│
+└── BrokerAdapter (brokers/broker_adapter.py) - Unified interface for placing orders with different brokers.
+├── ZerodhaAdapter (brokers/zerodha/)
+│ - Implements broker operations for Zerodha.
+├── UpstoxAdapter (brokers/upstox/)
+│ - Implements broker operations for Upstox.
+├── GTTOrderManager (broker-specific)
+│ - Manages GTT order placement and updates.
+└── OrderTemplates (broker-specific) - Provides order templates for different broker APIs.
+└── Alerts
+├── TelegramAlert (alerts/telegram/)
+│ - Sends alerts and notifications via Telegram.
+└── EmailAlert (alerts/email/) - Sends alerts and notifications via Email.
+
+Other shared modules (used throughout):
+
+- BROKER_SETTINGS (config/broker_config.py)
+  - Stores broker credentials and configuration.
+- Data Providers (data_providers/)
+  - Fetches market, institutional, and block deal data for analysis.
+- RiskEngine (core/risk_engine.py)
+  - Handles position sizing and risk validation.
+- PositionManager (core/position_manager.py)
+  - Tracks and manages open positions.
+- SignalAggregator (core/signal_aggregator.py)
+  - Aggregates signals from multiple strategies.
