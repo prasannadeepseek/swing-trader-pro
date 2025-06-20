@@ -486,3 +486,44 @@ Other shared modules (used throughout):
   - Tracks and manages open positions.
 - SignalAggregator (core/signal_aggregator.py)
   - Aggregates signals from multiple strategies.
+
+```mermaid
+graph TD
+    A[main.py<br/>Entry point: CLI, logging, broker selection, workflow start]
+    A --> B[PhaseManager<br/>Orchestrates daily workflow]
+    B --> C[MorningScreening<br/>Runs institutional, quant, Wyckoff screeners]
+    C --> C1[InstitutionalScreener<br/>Screens stocks by institutional activity]
+    C --> C2[QuantScreener<br/>Screens stocks using quant/stat methods]
+    C --> C3[WyckoffScreener<br/>Screens stocks using Wyckoff analysis]
+    B --> D[SignalGenerator<br/>Generates trade signals from screened stocks]
+    D --> D1[StrategyRouter<br/>Routes to appropriate trading strategy]
+    D1 --> D11[InstitutionalStrategy<br/>Signals from institutional flow]
+    D1 --> D12[WyckoffStrategy<br/>Signals using Wyckoff principles]
+    D1 --> D13[QuantStrategy<br/>Signals using quant models]
+    D --> D2[TrendClassifier<br/>Classifies trend for each symbol]
+    D --> D3[WeightAllocator<br/>Allocates position weights]
+    B --> E[DynamicMonitor<br/>Monitors trades, updates GTTs, manages exits]
+    E --> E1[GTTUpdater<br/>Updates Good-Till-Triggered orders]
+    E --> E2[RiskAssessor<br/>Assesses risk, triggers alerts/exits]
+    E --> E3[ExitManager<br/>Manages trade exits]
+    B --> F[ReportingEngine<br/>Generates daily reports & analytics]
+    F --> F1[DailyReport<br/>Compiles/formats daily report]
+    F --> F2[PerformanceAnalyzer<br/>Analyzes performance metrics]
+    B --> G[BrokerAdapter<br/>Unified broker interface]
+    G --> G1[ZerodhaAdapter<br/>Zerodha broker operations]
+    G --> G2[UpstoxAdapter<br/>Upstox broker operations]
+    G --> G3[GTTOrderManager<br/>Manages GTT order placement/updates]
+    G --> G4[OrderTemplates<br/>Broker-specific order templates]
+    G --> G5[Alerts<br/>Notifications/alerts]
+    G5 --> G51[TelegramAlert<br/>Sends alerts via Telegram]
+    G5 --> G52[EmailAlert<br/>Sends alerts via Email]
+    %% Shared modules
+    A -.-> H[BROKER_SETTINGS<br/>Broker credentials/config]
+    B -.-> I[RiskEngine<br/>Position sizing, risk validation]
+    B -.-> J[PositionManager<br/>Tracks open positions]
+    B -.-> K[SignalAggregator<br/>Aggregates signals]
+    C1 -.-> L[NSEFetcher<br/>Fetches OHLC, F&O, index data]
+    C1 -.-> M[NSDLFetcher<br/>Fetches FII/DII, sector flows]
+    C1 -.-> N[BlockDealFetcher<br/>Fetches block deal data]
+    C1 -.-> O[DataPipeline<br/>Consolidates all institutional data]
+```
