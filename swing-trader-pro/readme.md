@@ -526,4 +526,3 @@ graph TD
     C1 -.-> M[NSDLFetcher<br/>Fetches FII/DII, sector flows]
     C1 -.-> N[BlockDealFetcher<br/>Fetches block deal data]
     C1 -.-> O[DataPipeline<br/>Consolidates all institutional data]
-```
