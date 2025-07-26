@@ -4,47 +4,19 @@ import signal
 import argparse
 from core.phase_manager import PhaseManager
 from config.broker_config import BROKER_SETTINGS
-import logging
-
-
-def main():
-    logging.basicConfig(level=logging.INFO)
-    logger = logging.getLogger(__name__)
-
-    # Initialize system
-    phase_manager = PhaseManager(BROKER_SETTINGS)
-
-    try:
-        # Run complete daily cycle
-        phase_manager.execute_daily_cycle()
-    except Exception as e:
-        logger.error(f"System failure: {str(e)}")
-        raise
-
-
-if __name__ == "__main__":
-    main()
-
-# method 2 final version
-# swing-trader-pro/main.py
-
-
-def setup_logging():
-    logging.basicConfig(
-        level=logging.INFO,
-        format="%(asctime)s %(levelname)s %(name)s: %(message)s"
-    )
-    return logging.getLogger(__name__)
+from config.logging_config import configure_logging, get_logger
 
 
 def graceful_exit(signum, frame):
-    logger = logging.getLogger(__name__)
+    logger = get_logger(__name__)
     logger.info("Received termination signal. Shutting down gracefully...")
     sys.exit(0)
 
 
 def main():
-    logger = setup_logging()
+    # Configure logging once at the entry point
+    configure_logging()
+    logger = get_logger(__name__)
 
     # Register signal handlers for graceful shutdown
     signal.signal(signal.SIGINT, graceful_exit)
@@ -64,9 +36,9 @@ def main():
     if not broker_settings:
         logger.error(f"Broker '{args.broker}' not found in configuration.")
         sys.exit(1)
-
+    # Initialize system
     phase_manager = PhaseManager(broker_settings)
-
+    # Run complete daily cycle
     try:
         logger.info("Starting Swing Trader Pro daily cycle...")
         phase_manager.execute_daily_cycle()

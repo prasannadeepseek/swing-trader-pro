@@ -7,8 +7,20 @@
         "fii_url": "https://www.nsdl.co.in/emi/ismr/fii_dii_archive.php",
         "sector_url": "https://www.nsdl.co.in/emi/ismr/sector_reports.php"
     },
-    "broker": {
-        "api_key": "your_api_key",
-        "access_token": "your_access_token"
+    "brokers": {
+        "zerodha": {
+            "broker_name": "Zerodha",
+            "api_key": "your_zerodha_api_key",
+            "access_token": "your_zerodha_access_token"
+        },
+        "upstox": {
+            "broker_name": "upstox",
+            "api_key": "your_upstox_api_key",
+            "access_token": "your_upstox_access_token"
+        }
+    },
+    "telegram": {
+        "token": "your_bot_token",
+        "chat_id": "your_chat_id"
     }
 }
